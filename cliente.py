@@ -7,16 +7,32 @@ class ClienteArchivos:
         self.port = port
 
     def enviar_comando(self, mensaje_comando):
-        """Establece conexion, envia instruccion y retorna la respuesta."""
+        #Establece conexion, envia instruccion y retorna la respuesta de forma limpia.
         try:
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.connect((self.host, self.port))
+            
+            # Enviar comando completo
             client_socket.sendall(mensaje_comando.encode('utf-8'))
-            respuesta = client_socket.recv(4096).decode('utf-8')
+            
+            # FIN de transmisión: avisa al servidor que terminamos de enviar
+            client_socket.shutdown(socket.SHUT_WR)
+            
+            # Recibir la respuesta en bloques para evitar congelamientos en textos largos
+            fragmentos = []
+            while True:
+                bloque = client_socket.recv(4096)
+                if not bloque:
+                    break
+                fragmentos.append(bloque)
+                
+            respuesta = b"".join(fragmentos).decode('utf-8')
             client_socket.close()
             return respuesta
         except ConnectionRefusedError:
             return "ERROR: No se pudo conectar al servidor. ¿Esta encendido?"
+        except Exception as e:
+            return f"ERROR inesperado en la comunicacion: {str(e)}"
 
     def menu(self):
         while True:
