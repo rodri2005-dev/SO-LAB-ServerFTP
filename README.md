@@ -60,49 +60,33 @@ El proyecto fue desarrollado utilizando herramientas nativas del sistema operati
 
 Para replicar el entorno y ejecutar la simulación de concurrencia completa, siga este orden estricto en terminales independientes:
 
-### Paso 1: Configurar el entorno local y permisos (Linux/WSL)
-
-Cree los directorios necesarios y aplique la política de exclusión de acceso a usuarios externos:
-
-```bash
-mkdir -p ~/servidor_archivos/entrada ~/servidor_archivos/procesados ~/servidor_archivos/logs
-chmod 700 ~/servidor_archivos
-
+###Paso 1: Configurar el entorno local y permisos (Linux/WSL)Navegue hasta la raíz del proyecto e inicialice la estructura de almacenamiento local mediante rutas relativas dinámicas. Posteriormente, aplique la política de privilegios mínimos para restringir el acceso a usuarios externos del sistema operativo:  
+```
+cd ~/SO_ULS/PROYECTOSO_FTP/
+mkdir -p servidor_archivos/entrada servidor_archivos/procesados servidor_archivos/logs
+chmod 700 servidor_archivos
 ```
 
-### Paso 2: Levantar el Servidor Central
-
-Abra una terminal en la raíz del proyecto e inicialice el backend de red:
-
-```bash
-python -u servidor.py
+Paso 2: Generación de Datos de Entrada (Opcional para pruebas síncronas)Inyecte cargas de trabajo iniciales en el buffer de entrada para validar el comportamiento del sistema antes de activar la automatización: 
 
 ```
-
-### Paso 3: Activar el Demonio de Monitoreo
-
-Abra una segunda terminal en paralelo y ejecute el proceso de background:
-
-```bash
-python -u demonio.py
-
+echo "Datos de telemetria - Sensor Alfa: 42" > servidor_archivos/entrada/archivo1.txt
+echo "Log de sistema operativo - Estado: OK" > servidor_archivos/entrada/archivo2.txt
+echo "Buffer temporal de procesamiento v3" > servidor_archivos/entrada/archivo3.txt
 ```
 
-### Paso 4: Inicializar Clientes Interactivos
+Paso 3: Levantar el Servidor CentralAbra una terminal en la raíz del proyecto e inicialice el backend de red utilizando el parámetro -u para forzar el vaciado del buffer de salida en tiempo real:  `python3 -u servidor.py`
 
-Abra terminales adicionales (hasta 4 para pruebas de estrés de concurrencia completa) y ejecute la interfaz de usuario:
 
-```bash
-python cliente.py
+Paso 4 Activar el Demonio de Monitoreo: Abra una segunda terminal en paralelo y ejecute el proceso de background encargado del procesamiento automático:  `python3 -u demonio.py`
 
-```
 
----
+Paso 5 Inicializar Clientes Interactivos: Abra terminales adicionales (hasta 4 para pruebas de estrés de concurrencia completa) y ejecute la interfaz de usuario para interactuar con los sockets TCP/IP:  `python3 cliente.py`
 
 ## 🔒 Mecanismos de Sincronización Implementados
 
 * 
-**Exclusión Mutua (Mutex):** Se implementó `threading.Lock()` para asegurar la atomicidad en la sección crítica del código. Esto previene las condiciones de carrera (Race Conditions) cuando los clientes y el demonio acceden en paralelo al archivo compartido de auditoría (`registro.log`) o manipulan directorios simultáneamente.
+**Exclusión Mutua (Mutex):** Exclusión Mutua de Grano Fino (Fine-Grained Locking): Se implementó la primitiva de sincronización threading.Lock() configurada bajo un enfoque de grano fino. A diferencia de una estrategia de grano grueso—que introduce severos retardos e inanición por contención al bloquear bloques masivos de código—, nuestra arquitectura restringe la exclusión mutua única y estrictamente al milisegundo en que se modifican los recursos compartidos globales: el archivo centralizado de auditoría (registro.log) y el set de control en memoria RAM (archivos_en_proceso).  Las llamadas al sistema operativas que involucran Entrada/Salida (E/S) pesada en el disco duro, tales como shutil.move(), shutil.copy() y os.remove(), se ejecutan de forma completamente asíncrona y en paralelo fuera del bloque protegido por el candado, dado que cada hilo de ejecución atiende descriptores de archivos con nombres unívocos. Esto previene de forma absoluta las condiciones de carrera (Race Conditions) y los interbloqueos (Deadlocks) por reentrada, optimizando el rendimiento general del sistema (throughput) y garantizando que el servidor responda de manera instantánea a las peticiones del cliente sin experimentar congelamientos en la interfaz
 
 
 * 
