@@ -6,6 +6,7 @@ from datetime import datetime
 
 class DemonioProcesamiento:
     def __init__(self):
+        # Mapea dinámicamente la ruta absoluta donde está el script
         script_dir = os.path.dirname(os.path.abspath(__file__))
         self.base_dir = os.path.join(script_dir, "servidor_archivos")
         
@@ -19,12 +20,6 @@ class DemonioProcesamiento:
         
         self.lock = threading.Lock()
         self.archivos_en_proceso = set()
-
-    def registrar_log(self, mensaje):
-        with self.lock:
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            with open(self.log_file, "a") as f:
-                f.write(f"[{timestamp}] [DEMONIO] {mensaje}\n")
 
     def procesar_archivo_hilo(self, nombre_archivo):
         origen = os.path.join(self.entrada_dir, nombre_archivo)
