@@ -28,10 +28,10 @@ El ecosistema está compuesto por tres subsistemas independientes que interactú
 
 ```
 ~/servidor_archivos/
-├── entrada/      # Directorio de recepción y buffer de entrada para el demonio [cite: 15, 154]
-├── procesados/   # Directorio de destino final para archivos procesados [cite: 15, 64]
-└── logs/         # Directorio de auditoría [cite: 15]
-    └── registro.log  # Archivo compartido sincronizado mediante Locks [cite: 38]
+├── entrada/      # Directorio de recepción y buffer de entrada para el demonio 
+├── procesados/   # Directorio de destino final para archivos procesados 
+└── logs/         # Directorio de auditoría 
+    └── registro.log  # Archivo compartido sincronizado mediante Locks 
 
 ```
 
@@ -125,6 +125,3 @@ python cliente.py
 * Pablo Monardes 
 
 
-servidor.py`) deja en evidencia inmediata que solucionaron el problema del buffer en las terminales, lo cual suma muchísimos puntos de presentación[cite: 136, 178]. ¡Llegar y pegar!
-
-```
