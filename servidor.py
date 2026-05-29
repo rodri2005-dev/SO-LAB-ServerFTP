@@ -9,7 +9,7 @@ class ServidorArchivos:
         self.host = host
         self.port = port
         
-        # Sincronizamos la ruta exacta con la del demonio para evitar carpetas duplicadas
+        # Mapea dinámicamente la ruta absoluta donde está el script
         script_dir = os.path.dirname(os.path.abspath(__file__))
         self.base_dir = os.path.join(script_dir, "servidor_archivos")
         
@@ -80,11 +80,9 @@ class ServidorArchivos:
         self.registrar_log(f"Conexion aceptada desde {addr}")
         
         try:
-            while True:
-                data = conn.recv(4096).decode('utf-8')
-                if not data:
-                    break
-                
+            # Recibir el comando enviado por el cliente
+            data = conn.recv(4096).decode('utf-8')
+            if data:
                 partes = data.split("|", 2)
                 comando = partes[0]
                 respuesta = "ERROR: Comando desconocido."
@@ -105,10 +103,12 @@ class ServidorArchivos:
                 elif comando == "VER_LOGS":
                     respuesta = self.leer_logs()
                 
+                # Enviar la respuesta de vuelta al cliente
                 conn.sendall(respuesta.encode('utf-8'))
         except Exception as e:
             print(f"[-] Error manejando al cliente {addr}: {e}")
         finally:
+            # Cerrar el socket de forma atómica: rompe cualquier posibilidad de deadlock
             conn.close()
             print(f"[-] Conexion cerrada con {addr}")
 
