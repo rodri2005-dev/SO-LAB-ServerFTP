@@ -11,6 +11,19 @@ Este proyecto consiste en un sistema multipropósito **Cliente-Servidor de Gesti
 
 ---
 
+### ⚠️ Nota Importante sobre el Manejo de Rutas en la Opción 3 (Subir Archivo)
+
+Al ejecutar el `cliente.py` desde la terminal de **PowerShell** apuntando al entorno de **WSL**, el intérprete de Python resolverá las rutas de la siguiente manera:
+
+1. **Ruta Absoluta de Linux (Recomendado):**
+   * Si ingresas la ruta completa de Ubuntu (ej: `/home/rodri/SO_ULS/proyectoSO_FTP/pepe.txt`), el sistema operativo encontrará y leerá el archivo directamente desde el kernel de Linux sin desviaciones.
+
+2. **Ruta Relativa / Solo el Nombre del Archivo:**
+   * Si ingresas únicamente el nombre del archivo (ej: `pepe.txt`), la función de empaquetado `os.path.abspath()` del script resolverá la ruta utilizando el entorno de red cruzado de Windows que apunta a WSL.
+   * La terminal buscará el archivo bajo el formato de red de Windows:
+     `\\wsl.localhost\Ubuntu\home\<Tu_Usuario>\SO_ULS\proyectoSO_FTP\pepe.txt`
+   * **Requisito:** Para que esta opción funcione sin ingresar la ruta completa, el archivo que deseas subir debe estar guardado físicamente dentro de esa misma carpeta del proyecto en tu entorno de Ubuntu.
+---
 
 ## 🏗️ Arquitectura del Sistema
 
