@@ -9,7 +9,6 @@ class ServidorArchivos:
         self.host = host
         self.port = port
         
-        # Mapea dinámicamente la ruta absoluta donde está el script
         script_dir = os.path.dirname(os.path.abspath(__file__))
         self.base_dir = os.path.join(script_dir, "servidor_archivos")
         
@@ -21,7 +20,8 @@ class ServidorArchivos:
         os.makedirs(self.procesados_dir, exist_ok=True)
         os.makedirs(os.path.dirname(self.log_file), exist_ok=True)
         
-        self.lock = threading.Lock()
+        # SOLUCIÓN: Cambiar Lock por RLock para evitar el auto-bloqueo (Deadlock)
+        self.lock = threading.RLock() 
         
         if not os.path.exists(self.log_file):
             with open(self.log_file, 'w') as f:
@@ -30,7 +30,7 @@ class ServidorArchivos:
     def registrar_log(self, mensaje):
         with self.lock:
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            with open(self.log_file, "a") as f:
+            with open(self.log_file, "a", encoding="utf-8") as f:
                 f.write(f"[{timestamp}] {mensaje}\n")
 
     def listar_archivos(self):
@@ -47,6 +47,7 @@ class ServidorArchivos:
         with self.lock:
             if os.path.exists(origen):
                 shutil.copy(origen, destino)
+                # Ahora que es RLock, llamar a registrar_log aquí ya no causará un Deadlock
                 self.registrar_log(f"Archivo {nombre_archivo} copiado a procesados.")
                 return "OK: Archivo copiado con exito."
             return "ERROR: El archivo no existe en entrada."
@@ -54,63 +55,77 @@ class ServidorArchivos:
     def leer_archivo(self, nombre_archivo):
         ruta = os.path.join(self.entrada_dir, nombre_archivo)
         if not os.path.exists(ruta):
-            ruta = os.path.join(self.procesados_dir, nombre_archivo)
+            path_procesados = os.path.join(self.procesados_dir, nombre_archivo)
+            if os.path.exists(path_procesados):
+                ruta = path_procesados
             
-        if os.path.exists(ruta):
-            with self.lock:
-                with open(ruta, "r") as f:
+        with self.lock:
+            if os.path.exists(ruta):
+                with open(ruta, "r", encoding="utf-8") as f:
                     return f.read()
         return "ERROR: Archivo no encontrado."
 
     def recibir_archivo(self, nombre_archivo, contenido):
         ruta = os.path.join(self.entrada_dir, nombre_archivo)
         with self.lock:
-            with open(ruta, "w") as f:
+            with open(ruta, "w", encoding="utf-8") as f:
                 f.write(contenido)
         self.registrar_log(f"Cliente subio el archivo: {nombre_archivo}")
         return "OK: Archivo subido correctamente."
 
     def leer_logs(self):
         with self.lock:
-            with open(self.log_file, "r") as f:
+            with open(self.log_file, "r", encoding="utf-8") as f:
                 return f.read()
-
+    
     def manejar_cliente(self, conn, addr):
         print(f"[+] Nueva conexion establecida desde {addr}")
         self.registrar_log(f"Conexion aceptada desde {addr}")
         
         try:
-            # Recibir el comando enviado por el cliente
-            data = conn.recv(4096).decode('utf-8')
+            data = conn.recv(65536).decode('utf-8')
             if data:
                 partes = data.split("|", 2)
                 comando = partes[0]
                 respuesta = "ERROR: Comando desconocido."
                 
                 if comando == "LISTAR":
+                    self.registrar_log(f"Cliente {addr} solicito LISTAR archivos de entrada.")
                     respuesta = self.listar_archivos()
+                    
                 elif comando == "COPIAR":
                     if len(partes) > 1: 
+                        self.registrar_log(f"Cliente {addr} solicito COPIA remota de: {partes[1]}")
                         respuesta = self.copiar_a_procesados(partes[1])
                     else:
                         respuesta = "ERROR: Falta parametro."
+                        
                 elif comando == "LEER":
-                    if len(partes) > 1: respuesta = self.leer_archivo(partes[1])
+                    if len(partes) > 1: 
+                        self.registrar_log(f"Cliente {addr} solicito LEER el archivo: {partes[1]}")
+                        respuesta = self.leer_archivo(partes[1])
+                        
                 elif comando == "SUBIR":
-                    if len(partes) > 2: respuesta = self.recibir_archivo(partes[1], partes[2])
+                    if len(partes) > 2: 
+                        respuesta = self.recibir_archivo(partes[1], partes[2])
+                        
                 elif comando == "DESCARGAR":
-                    if len(partes) > 1: respuesta = self.leer_archivo(partes[1])
+                    if len(partes) > 1: 
+                        self.registrar_log(f"Cliente {addr} DESCARGO el archivo: {partes[1]}")
+                        respuesta = self.leer_archivo(partes[1])
+                        
                 elif comando == "VER_LOGS":
+                    self.registrar_log(f"Cliente {addr} consulto el HISTORIAL DE LOGS.")
                     respuesta = self.leer_logs()
                 
-                # Enviar la respuesta de vuelta al cliente
                 conn.sendall(respuesta.encode('utf-8'))
         except Exception as e:
             print(f"[-] Error manejando al cliente {addr}: {e}")
+            self.registrar_log(f"ERROR critico manejando cliente {addr}: {str(e)}")
         finally:
-            # Cerrar el socket de forma atómica: rompe cualquier posibilidad de deadlock
             conn.close()
             print(f"[-] Conexion cerrada con {addr}")
+            self.registrar_log(f"Conexion cerrada con {addr}\n")
 
     def iniciar(self):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
