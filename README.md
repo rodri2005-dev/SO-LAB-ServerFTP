@@ -92,7 +92,26 @@ Paso 5 Inicializar Clientes Interactivos: Abra terminales adicionales (hasta 4 p
 * 
 **Vaciado de Buffer (Flush):** Las salidas estándares en consola incorporan el argumento `flush=True` para mitigar la retención pasiva de E/S en la memoria RAM impuesta por la gestión de buffers de Windows, asegurando telemetría en tiempo real.
 
+---
 
+## 🛠️ Troubleshooting: Sincronización I/O en Entornos Híbridos (WSL/Windows)
+
+Durante el desarrollo del sistema de transferencia concurrente, se detectó un problema crítico de bloqueo (*hang*) visual en la consola de PowerShell al procesar lotes de archivos concurrentes a través de WSL.
+
+### El Problema
+Cuando el directorio de entrada contenía archivos, los hilos secundarios procesaban, movían los elementos con éxito y escribían sus logs individuales en el disco. Sin embargo, al finalizar las tareas, el **hilo principal se quedaba suspendido de forma indefinida**. El script nunca llegaba a ejecutar las líneas de feedback finales ni el método de salida (`os._exit(0)`), impidiendo que el prompt de la terminal se liberara automáticamente.
+
+**¿Por qué ocurría esto?**
+1. **Deadlock de Exclusión Mutua (Lock):** Se invocaba el método de logging (que adquiere el candado `self.lock`) dentro de bloques de código que ya retenían el mismo lock en el hilo secundario, generando un interbloqueo sutil al cruzarse con operaciones pesadas de I/O.
+2. **Latencia del Sistema de Archivos Cruzado (DrvFS a NTFS):** La transferencia física con `shutil.move()` desde el entorno Linux de WSL hacia el host de Windows genera una cola de operaciones en el kernel. El hilo principal rompía el ciclo de espera e intentaba matar el proceso (`os._exit()`) mientras los descriptores de archivos (`fd`) y los buffers de salida (`stdout`) de la consola aún no se habían purgado del todo, congelando la interfaz de PowerShell.
+
+### La Solución
+Se reestructuró quirúrgicamente el flujo de sincronización en el archivo `demonio.py` aplicando los siguientes cambios:
+
+* **Desacoplamiento de Locks:** Se aislaron las llamadas a `registrar_log()` fuera de los contextos críticos concurrentes de los hilos, eliminando la contención y el riesgo de deadlock.
+* **Espera Dinámica Eficiente en RAM:** Se optimizó el bucle de monitoreo del hilo principal sobre el conjunto `self.archivos_en_proceso`, implementando un delay de control de `50ms` (`time.sleep(0.05)`) que balancea el uso de CPU (i7) sin perder reactividad.
+* **Ventana de Purga para el Kernel (Flush Cooldown):** Se añadió un retraso estratégico de `100ms` (`time.sleep(0.1)`) inmediatamente después de forzar el vaciado del buffer de salida (`sys.stdout.flush()`) y justo antes del cierre fulminante del script. Esto garantiza que WSL termine de transferir hasta el último byte visual a PowerShell antes de liberar la consola.
+* **Formateador de Bloques Secuenciales:** Se adaptó el método de escritura para desglosar strings multilínea en escrituras atómicas, asegurando que el archivo `registro.log` mantenga marcas de tiempo uniformes y limpias.
 
 ---
 
