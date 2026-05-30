@@ -1,0 +1,120 @@
+[2026-05-28 22:00:16] Conexion aceptada desde ('127.0.0.1', 58996)
+[2026-05-28 22:01:00] Conexion aceptada desde ('127.0.0.1', 50478)
+[2026-05-28 22:01:24] Conexion aceptada desde ('127.0.0.1', 62532)
+[2026-05-28 22:18:29] Conexion aceptada desde ('127.0.0.1', 58053)
+[2026-05-28 22:18:34] Conexion aceptada desde ('127.0.0.1', 60228)
+[2026-05-28 22:18:51] Conexion aceptada desde ('127.0.0.1', 54136)
+[2026-05-28 22:43:58] Conexion aceptada desde ('127.0.0.1', 56714)
+[2026-05-28 22:50:39] Conexion aceptada desde ('127.0.0.1', 55317)
+[2026-05-28 22:54:11] Conexion aceptada desde ('127.0.0.1', 52947)
+[2026-05-29 17:05:52] Conexion aceptada desde ('127.0.0.1', 61741)
+[2026-05-29 17:06:15] Conexion aceptada desde ('127.0.0.1', 61742)
+[2026-05-29 17:13:21] Conexion aceptada desde ('127.0.0.1', 61815)
+[2026-05-29 17:13:30] Conexion aceptada desde ('127.0.0.1', 61816)
+[2026-05-29 17:13:31] Conexion aceptada desde ('127.0.0.1', 61818)
+[2026-05-29 17:13:33] Conexion aceptada desde ('127.0.0.1', 61819)
+[2026-05-29 18:03:57] Conexion aceptada desde ('127.0.0.1', 56457)
+[2026-05-29 18:04:55] Conexion aceptada desde ('127.0.0.1', 50669)
+[2026-05-29 18:05:20] Conexion aceptada desde ('127.0.0.1', 62601)
+[2026-05-29 18:05:36] Conexion aceptada desde ('127.0.0.1', 62606)
+[2026-05-29 18:06:03] Conexion aceptada desde ('127.0.0.1', 62610)
+[2026-05-29 18:32:42] Conexion aceptada desde ('127.0.0.1', 62945)
+[2026-05-29 18:32:55] Conexion aceptada desde ('127.0.0.1', 62946)
+[2026-05-29 18:32:59] Conexion aceptada desde ('127.0.0.1', 62948)
+[2026-05-29 18:33:02] Conexion aceptada desde ('127.0.0.1', 62949)
+[2026-05-29 19:53:00] Conexion aceptada desde ('127.0.0.1', 56499)
+[2026-05-29 19:53:13] Conexion aceptada desde ('127.0.0.1', 56504)
+[2026-05-29 19:57:19] Conexion aceptada desde ('127.0.0.1', 53379)
+[2026-05-29 19:58:52] Conexion aceptada desde ('127.0.0.1', 56203)
+[2026-05-29 20:15:30] Conexion aceptada desde ('127.0.0.1', 51709)
+[2026-05-29 20:15:30] Cliente ('127.0.0.1', 51709) consulto el HISTORIAL DE LOGS.
+[2026-05-29 20:15:30] Conexion cerrada con ('127.0.0.1', 51709)
+[2026-05-29 20:15:41] Conexion aceptada desde ('127.0.0.1', 51712)
+[2026-05-29 20:47:18] Conexion aceptada desde ('127.0.0.1', 49990)
+[2026-05-29 20:47:18] Cliente ('127.0.0.1', 49990) solicito LISTAR archivos de entrada.
+[2026-05-29 20:47:18] Conexion cerrada con ('127.0.0.1', 49990)
+[2026-05-29 20:47:20] Conexion aceptada desde ('127.0.0.1', 49991)
+[2026-05-29 20:47:20] Cliente ('127.0.0.1', 49991) consulto el HISTORIAL DE LOGS.
+[2026-05-29 20:47:20] Conexion cerrada con ('127.0.0.1', 49991)
+[2026-05-29 20:47:48] Conexion aceptada desde ('127.0.0.1', 58769)
+[2026-05-29 20:47:48] Cliente ('127.0.0.1', 58769) DESCARGO el archivo: archivo1.txt
+[2026-05-29 20:47:48] Conexion cerrada con ('127.0.0.1', 58769)
+[2026-05-29 20:48:29] Conexion aceptada desde ('127.0.0.1', 58795)
+[2026-05-29 21:05:46] Conexion aceptada desde ('127.0.0.1', 50429)
+[2026-05-29 21:11:10] Conexion aceptada desde ('127.0.0.1', 51510)
+[2026-05-29 21:11:10] Cliente ('127.0.0.1', 51510) solicito LISTAR archivos de entrada.
+[2026-05-29 21:11:10] Conexion cerrada con ('127.0.0.1', 51510)
+[2026-05-29 21:11:22] Conexion aceptada desde ('127.0.0.1', 51512)
+[2026-05-29 22:59:56] Conexion aceptada desde ('127.0.0.1', 64991)
+[2026-05-29 22:59:56] Cliente ('127.0.0.1', 64991) solicito LISTAR archivos de entrada.
+[2026-05-29 22:59:56] Conexion cerrada con ('127.0.0.1', 64991)
+[2026-05-29 23:00:16] Conexion aceptada desde ('127.0.0.1', 64994)
+[2026-05-29 23:00:16] Cliente ('127.0.0.1', 64994) consulto el HISTORIAL DE LOGS.
+[2026-05-29 23:00:16] Conexion cerrada con ('127.0.0.1', 64994)
+[2026-05-29 23:04:21] Conexion aceptada desde ('127.0.0.1', 60543)
+[2026-05-29 23:04:21] Cliente ('127.0.0.1', 60543) solicito COPIA remota de: archivo1.txt
+[2026-05-30 00:00:08] Conexion aceptada desde ('127.0.0.1', 65241)
+[2026-05-30 00:00:08] Cliente ('127.0.0.1', 65241) solicito LISTAR archivos de entrada.
+[2026-05-30 00:00:08] Conexion cerrada con ('127.0.0.1', 65241)
+[2026-05-30 00:00:20] Conexion aceptada desde ('127.0.0.1', 65242)
+[2026-05-30 00:00:20] Cliente ('127.0.0.1', 65242) solicito COPIA remota de: archivo2.txt
+[2026-05-30 00:04:06] Conexion aceptada desde ('127.0.0.1', 49363)
+[2026-05-30 00:04:06] Cliente ('127.0.0.1', 49363) solicito COPIA remota de: archivo3.txt
+[2026-05-30 00:11:06] Conexion aceptada desde ('127.0.0.1', 46978)
+[2026-05-30 00:11:06] Cliente ('127.0.0.1', 46978) solicito COPIA remota de: archivo4.txt
+[2026-05-30 17:06:24] DEMONIO: Se ejecuto proceso demonio, pero el directorio de entrada estaba vacio.
+[2026-05-30 17:18:21] DEMONIO: Procesado de forma automatica y movido: archivo1.txt
+[2026-05-30 17:18:21] DEMONIO: Procesamiento por lote finalizado con exito.
+    -> Total procesados: 1
+    -> Detalle de archivos: [archivo1.txt]
+[2026-05-30 17:24:38] Conexion aceptada desde ('127.0.0.1', 65243)
+[2026-05-30 17:24:39] Cliente ('127.0.0.1', 65243) DESCARGO el archivo: hola_mundo.txt
+[2026-05-30 17:24:39] Conexion cerrada con ('127.0.0.1', 65243)
+
+[2026-05-30 17:27:47] Conexion aceptada desde ('127.0.0.1', 55077)
+[2026-05-30 17:27:47] Cliente ('127.0.0.1', 55077) consulto el HISTORIAL DE LOGS.
+[2026-05-30 17:27:47] Conexion cerrada con ('127.0.0.1', 55077)
+
+[2026-05-30 17:27:55] Conexion aceptada desde ('127.0.0.1', 55078)
+[2026-05-30 17:27:55] Cliente ('127.0.0.1', 55078) DESCARGO el archivo: hola_mundo.txt
+[2026-05-30 17:27:55] Conexion cerrada con ('127.0.0.1', 55078)
+
+[2026-05-30 17:30:06] Conexion aceptada desde ('127.0.0.1', 57650)
+[2026-05-30 17:30:06] Cliente ('127.0.0.1', 57650) consulto el HISTORIAL DE LOGS.
+[2026-05-30 17:30:06] Conexion cerrada con ('127.0.0.1', 57650)
+
+[2026-05-30 17:30:20] Conexion aceptada desde ('127.0.0.1', 52934)
+[2026-05-30 17:30:20] Cliente ('127.0.0.1', 52934) solicito LISTAR archivos de entrada.
+[2026-05-30 17:30:20] Conexion cerrada con ('127.0.0.1', 52934)
+
+[2026-05-30 17:30:30] Conexion aceptada desde ('127.0.0.1', 52935)
+[2026-05-30 17:30:30] Cliente ('127.0.0.1', 52935) DESCARGO el archivo: hola_mundo.txt
+[2026-05-30 17:30:30] Conexion cerrada con ('127.0.0.1', 52935)
+
+[2026-05-30 17:30:53] Conexion aceptada desde ('127.0.0.1', 52939)
+[2026-05-30 17:30:53] Cliente ('127.0.0.1', 52939) DESCARGO el archivo: hola_mundo.txt
+[2026-05-30 17:30:53] Conexion cerrada con ('127.0.0.1', 52939)
+
+[2026-05-30 17:32:28] Conexion aceptada desde ('127.0.0.1', 63008)
+[2026-05-30 17:32:28] Cliente ('127.0.0.1', 63008) DESCARGO el archivo: hola_mundo.txt
+[2026-05-30 17:32:28] Conexion cerrada con ('127.0.0.1', 63008)
+
+[2026-05-30 17:34:40] Conexion aceptada desde ('127.0.0.1', 51901)
+[2026-05-30 17:34:40] Cliente ('127.0.0.1', 51901) DESCARGO el archivo: hola_mundo.txt
+[2026-05-30 17:34:40] Conexion cerrada con ('127.0.0.1', 51901)
+
+[2026-05-30 17:38:38] Conexion aceptada desde ('127.0.0.1', 63939)
+[2026-05-30 17:38:38] Cliente subio el archivo: pepe.txt
+[2026-05-30 17:38:38] Conexion cerrada con ('127.0.0.1', 63939)
+
+[2026-05-30 17:48:03] Conexion aceptada desde ('127.0.0.1', 58868)
+[2026-05-30 17:48:03] Cliente ('127.0.0.1', 58868) solicito LISTAR archivos de entrada.
+[2026-05-30 17:48:03] Conexion cerrada con ('127.0.0.1', 58868)
+
+[2026-05-30 17:48:14] Conexion aceptada desde ('127.0.0.1', 58869)
+[2026-05-30 17:48:14] Cliente ('127.0.0.1', 58869) solicito COPIA remota de: archivo1.txt
+[2026-05-30 17:53:22] Conexion aceptada desde ('127.0.0.1', 59132)
+[2026-05-30 17:53:22] Cliente ('127.0.0.1', 59132) solicito COPIA remota de: archivo1.txt
+[2026-05-30 17:53:22] Archivo archivo1.txt copiado a procesados.
+[2026-05-30 17:53:22] Conexion cerrada con ('127.0.0.1', 59132)
+
